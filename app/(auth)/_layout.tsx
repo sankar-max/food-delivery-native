@@ -1,5 +1,6 @@
 import { images } from "@/constants"
-import { Slot } from "expo-router"
+import { useAuthStore } from "@/feature/store/auth.store"
+import { Redirect, Slot } from "expo-router"
 import React from "react"
 import {
   Dimensions,
@@ -12,6 +13,10 @@ import {
 } from "react-native"
 
 const AuthLayout = () => {
+  const { isAuthenticated } = useAuthStore()
+  if (isAuthenticated) {
+    return <Redirect href="/" />
+  }
   const ios = Platform.OS === "ios"
 
   const dimensionHeight = Dimensions.get("screen").height / 2.15
