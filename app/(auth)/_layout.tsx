@@ -13,7 +13,7 @@ import {
 } from "react-native"
 
 const AuthLayout = () => {
-  const { isAuthenticated } = useAuthStore()
+  const { isAuthenticated, user } = useAuthStore()
   if (isAuthenticated) {
     return <Redirect href="/" />
   }

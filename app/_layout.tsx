@@ -11,7 +11,7 @@ import { useEffect } from "react"
 import "./global.css"
 
 export default function RootLayout() {
-  const { fetchUser, isLoading, user } = useAuthStore()
+  const { fetchUser, isLoading } = useAuthStore()
   useReactQueryDevTools(queryClient)
 
   const [fontsLoaded, fontError] = useFonts({
@@ -37,7 +37,6 @@ export default function RootLayout() {
   if (isLoading || !fontsLoaded) {
     return null
   }
-  console.log(user)
 
   return (
     <PersistQueryClientProvider
