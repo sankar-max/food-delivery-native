@@ -5,16 +5,17 @@ import { Alert, Text, View } from "react-native"
 
 import CustomBtn from "@/components/CustomBtn"
 import Input from "@/components/Input"
-import { signUpSchema, type signUpSchemaType } from "@/feature/authSchema"
-import { createUser } from "@/lib/appwrite"
+import { signUpSchema, type signUpSchemaType } from "../../feature/auth/schemas/auth.schema"
+import { useSignup } from "../../feature/auth/hooks/useSignup"
 
 export default function SignUp() {
   const router = useRouter()
+  const { signup, loading } = useSignup()
 
   const {
     control,
     handleSubmit,
-    formState: { errors, isSubmitting: isLoading },
+    formState: { errors },
   } = useForm<signUpSchemaType>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
@@ -28,7 +29,7 @@ export default function SignUp() {
 
   const onSubmit = async (data: signUpSchemaType) => {
     try {
-      await createUser(data)
+      await signup(data)
       Alert.alert("Success", "Account created successfully!")
       router.replace("/(tabs)")
     } catch (err: any) {
@@ -40,6 +41,7 @@ export default function SignUp() {
   return (
     <View className="flex-1 bg-white px-6 pt-10 gap-8">
       <View className="items-center mb-6">
+
         <Text className="text-3xl font-bold text-gray-800">Welcome back</Text>
         <Text className="text-base text-gray-500 mt-2">
           Sign up to continue
@@ -60,7 +62,7 @@ export default function SignUp() {
             autoCorrect={false}
             autoComplete="name"
             error={errors.name?.message}
-            editable={!isLoading}
+            editable={!loading}
           />
         )}
       />
@@ -78,7 +80,7 @@ export default function SignUp() {
             autoCorrect={false}
             autoComplete="email"
             error={errors.email?.message}
-            editable={!isLoading}
+            editable={!loading}
           />
         )}
       />
@@ -95,7 +97,7 @@ export default function SignUp() {
             secureTextEntry
             autoCapitalize="none"
             error={errors.password?.message}
-            editable={!isLoading}
+            editable={!loading}
           />
         )}
       />
@@ -110,8 +112,8 @@ export default function SignUp() {
 
       <CustomBtn
         onPress={handleSubmit(onSubmit)}
-        isLoading={isLoading}
-        disabled={isLoading}
+        isLoading={loading}
+        disabled={loading}
         variant="primary"
         size="lg"
         className="mt-4 rounded-full"

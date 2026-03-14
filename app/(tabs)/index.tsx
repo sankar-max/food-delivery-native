@@ -16,7 +16,7 @@ export default function Index() {
     <SafeAreaView className="bg-white flex-1">
       <FlatList
         ListHeaderComponent={
-          <View className="items-center justify-between flex-row w-full my-5 ">
+          <View className="items-center  justify-between flex-row w-full my-5 ">
             <View className="items-start justify-center">
               <Text>DELIVER TO</Text>
               <TouchableOpacity className="flex-row items-center gap-x-1">

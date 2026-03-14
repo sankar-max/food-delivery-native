@@ -5,16 +5,17 @@ import { Alert, Text, View } from "react-native"
 
 import CustomBtn from "@/components/CustomBtn"
 import Input from "@/components/Input"
-import { signInSchema, type signInSchemaType } from "@/feature/authSchema"
-import { signIn } from "@/lib/appwrite"
+import { signInSchema, type signInSchemaType } from "../../feature/auth/schemas/auth.schema"
+import { useLogin } from "../../feature/auth/hooks/useLogin"
 
 export default function SignIn() {
   const router = useRouter()
+  const { login, loading } = useLogin()
 
   const {
     control,
     handleSubmit,
-    formState: { errors, isSubmitting: isLoading },
+    formState: { errors },
   } = useForm<signInSchemaType>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
@@ -27,7 +28,7 @@ export default function SignIn() {
 
   const onSubmit = async (data: signInSchemaType) => {
     try {
-      await signIn(data)
+      await login(data)
       Alert.alert("Welcome back!", "You have signed in successfully.")
       router.replace("/(tabs)")
     } catch (err: any) {
@@ -60,7 +61,7 @@ export default function SignIn() {
             autoCorrect={false}
             autoComplete="email"
             error={errors.email?.message}
-            editable={!isLoading}
+            editable={!loading}
           />
         )}
       />
@@ -77,7 +78,7 @@ export default function SignIn() {
             secureTextEntry
             autoCapitalize="none"
             error={errors.password?.message}
-            editable={!isLoading}
+            editable={!loading}
           />
         )}
       />
@@ -92,8 +93,8 @@ export default function SignIn() {
 
       <CustomBtn
         onPress={handleSubmit(onSubmit)}
-        isLoading={isLoading}
-        disabled={isLoading}
+        isLoading={loading}
+        disabled={loading}
         variant="primary"
         size="lg"
         className="mt-4 rounded-full"
