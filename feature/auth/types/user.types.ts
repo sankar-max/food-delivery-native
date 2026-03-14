@@ -1,6 +1,6 @@
 import { Models } from "react-native-appwrite"
 
-export type UserRow = Models.Row & {
+export type User = Models.Row & {
   userId: string
   username: string
   email: string

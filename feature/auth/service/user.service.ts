@@ -4,7 +4,7 @@ import { appwriteConfig } from "@/lib/appwrite/config"
 import { tables } from "@/lib/appwrite/database"
 import { ID, Query } from "react-native-appwrite"
 import type { signUpSchemaType } from "../schemas/auth.schema"
-import type { UserRow } from "../types/user.types"
+import type { User } from "../types/user.types"
 import { signIn } from "./auth.service"
 
 export async function createUser(input: signUpSchemaType) {
@@ -27,7 +27,7 @@ export async function createUser(input: signUpSchemaType) {
       tableId: appwriteConfig.userTable,
       rowId: ID.unique(),
       data: {
-        userId: user.$id,
+        $id: user.$id,
         username: name,
         email,
         avatar_url: avatarUrl,
@@ -43,16 +43,16 @@ export async function createUser(input: signUpSchemaType) {
   }
 }
 
-export async function getCurrentUser(): Promise<UserRow | null> {
+export async function getCurrentUser(): Promise<User | null> {
   try {
     const accountData = await account.get()
 
     if (!accountData) throw new Error("No active account")
 
-    const result = await tables.listRows<UserRow>({
+    const result = await tables.listRows<User>({
       databaseId: appwriteConfig.databaseId,
       tableId: appwriteConfig.userTable,
-      queries: [Query.equal("userId", accountData.$id)],
+      queries: [Query.equal("$id", accountData.$id)],
     })
 
     return result.rows[0] ?? null

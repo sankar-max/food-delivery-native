@@ -1,10 +1,20 @@
+import { useAuthStore } from "@/feature/store/auth.store"
+import {
+  PersistQueryClientProvider,
+  persister,
+  queryClient,
+} from "@/lib/queryClient"
+import { useReactQueryDevTools } from "@dev-plugins/react-query"
 import { useFonts } from "expo-font"
 import { SplashScreen, Stack } from "expo-router"
 import { useEffect } from "react"
-
 import "./global.css"
+
 export default function RootLayout() {
-  const [fontsLoaded, error] = useFonts({
+  const { fetchUser, isLoading, user } = useAuthStore()
+  useReactQueryDevTools(queryClient)
+
+  const [fontsLoaded, fontError] = useFonts({
     "Quicksand-Regular": require("../assets/fonts/Quicksand-Regular.ttf"),
     "Quicksand-Medium": require("../assets/fonts/Quicksand-Medium.ttf"),
     "Quicksand-SemiBold": require("../assets/fonts/Quicksand-SemiBold.ttf"),
@@ -13,8 +23,29 @@ export default function RootLayout() {
   })
 
   useEffect(() => {
-    if (error) throw error
+    if (fontError) throw fontError
     if (fontsLoaded) SplashScreen.hideAsync()
-  }, [fontsLoaded, error])
-  return <Stack screenOptions={{ headerShown: false }} />
+  }, [fontsLoaded, fontError])
+
+  useEffect(() => {
+    fetchUser()
+  }, [fetchUser])
+
+  if (!fontsLoaded && !fontError) {
+    return null
+  }
+  if (isLoading || !fontsLoaded) {
+    return null
+  }
+  console.log(user)
+
+  return (
+    <PersistQueryClientProvider
+      client={queryClient}
+      persistOptions={{ persister }}
+      onSuccess={() => queryClient.resumePausedMutations()}
+    >
+      <Stack screenOptions={{ headerShown: false }} />
+    </PersistQueryClientProvider>
+  )
 }

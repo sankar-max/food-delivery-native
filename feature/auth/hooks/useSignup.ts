@@ -1,18 +1,18 @@
-import { useState } from "react"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import type { signUpSchemaType } from "../schemas/auth.schema"
 import { createUser } from "../service/user.service"
+import { USER_QUERY_KEY } from "./useUser"
 
 export function useSignup() {
-  const [loading, setLoading] = useState(false)
+  const queryClient = useQueryClient()
 
-  async function signup(data: signUpSchemaType) {
-    setLoading(true)
-    try {
-      await createUser(data)
-    } finally {
-      setLoading(false)
-    }
-  }
+  const { mutateAsync, isPending } = useMutation({
+    mutationFn: (data: signUpSchemaType) => createUser(data),
+    onSuccess: async () => {
+      // After creating user (and auto-signing in), invalidate the active user cache
+      await queryClient.invalidateQueries({ queryKey: USER_QUERY_KEY })
+    },
+  })
 
-  return { signup, loading }
+  return { signup: mutateAsync, loading: isPending }
 }
