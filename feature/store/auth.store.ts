@@ -16,7 +16,6 @@ export const useAuthStore = create<AuthStore>((set) => ({
       const user = await getCurrentUser()
       set({ user: user, isAuthenticated: true })
     } catch (error) {
-      console.log(error)
       set({ isLoading: false, isAuthenticated: false })
     } finally {
       set({ isLoading: false })
