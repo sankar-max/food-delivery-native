@@ -74,7 +74,11 @@
   }
 
   .tab-icon {
-    @apply flex min-w-20 items-center justify-center min-h-full gap-1 mt-12;
+    @apply flex items-center justify-center gap-1.5;
+  }
+
+  .tab-icon__indicator {
+    @apply size-1.5 bg-primary rounded-full mt-1;
   }
 
   .offer-card {
