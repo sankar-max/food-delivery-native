@@ -3,6 +3,7 @@ import { useAuthStore } from "@/feature/store/auth.store"
 import { Redirect, Slot } from "expo-router"
 import React from "react"
 import {
+  ActivityIndicator,
   Dimensions,
   Image,
   ImageBackground,
@@ -13,7 +14,16 @@ import {
 } from "react-native"
 
 const AuthLayout = () => {
-  const { isAuthenticated, user } = useAuthStore()
+  const user = useAuthStore((s) => s.user)
+  const isLoading = useAuthStore((s) => s.isLoading)
+  const isAuthenticated = !!user
+  if (isLoading) {
+    return (
+      <View className="flex-1 justify-center items-center">
+        <ActivityIndicator size="large" color="#FF6B35" />
+      </View>
+    )
+  }
   if (isAuthenticated) {
     return <Redirect href="/" />
   }

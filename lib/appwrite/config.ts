@@ -6,5 +6,10 @@ export const appwriteConfig = {
   platform: "com.sankar.fooddelivery",
 
   databaseId: "69b1c0750023dad30c37",
+  bucketId: "69b5b081003949718a9e",
   userTable: "user",
+  categoriesTable: "categories",
+  menuTable: "menu",
+  customizationTable: "customization",
+  menuCustomizationTable: "menu_customization",
 } as const

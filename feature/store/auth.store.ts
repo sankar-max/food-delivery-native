@@ -1,24 +1,46 @@
 import { create } from "zustand"
-import { getCurrentUser } from "../auth/service/user.service"
-import { User } from "../auth/types/user.types"
-import { AuthStore } from "./types"
+import { persist, createJSONStorage } from "zustand/middleware"
+import AsyncStorage from "@react-native-async-storage/async-storage"
 
-export const useAuthStore = create<AuthStore>((set) => ({
-  user: null,
-  isAuthenticated: false,
-  isLoading: true,
-  setIsAuthenticated: (isAuthenticated: boolean) => set({ isAuthenticated }),
-  setIsLoading: (isLoading: boolean) => set({ isLoading }),
-  setUser: (user: User) => set({ user }),
-  fetchUser: async () => {
-    try {
-      set({ isLoading: true })
-      const user = await getCurrentUser()
-      set({ user: user, isAuthenticated: true })
-    } catch (error) {
-      set({ isLoading: false, isAuthenticated: false })
-    } finally {
-      set({ isLoading: false })
-    }
-  },
-}))
+import { getCurrentUser } from "../auth/service/user.service"
+import type { AuthStore } from "./types"
+
+export const useAuthStore = create<AuthStore>()(
+  persist(
+    (set) => ({
+      user: null,
+      isLoading: false,
+
+      setUser: (user) => set({ user }),
+
+      fetchUser: async () => {
+        set({ isLoading: true })
+
+        try {
+          const user = await getCurrentUser()
+
+          set({
+            user: user ?? null,
+            isLoading: false,
+          })
+        } catch (error) {
+          console.error("Failed to fetch user:", error)
+
+          set({
+            user: null,
+            isLoading: false,
+          })
+        }
+      },
+
+      logout: () => set({ user: null }),
+    }),
+    {
+      name: "auth-storage",
+      storage: createJSONStorage(() => AsyncStorage),
+      partialize: (state) => ({
+        user: state.user,
+      }),
+    },
+  ),
+)
