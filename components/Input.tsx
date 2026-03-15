@@ -75,7 +75,7 @@ const Input = forwardRef<TextInput, InputProps>(
         <View
           className={cn(
             "flex-row items-center rounded-lg border bg-white px-4 ",
-            isFocused ? "border-blue-500" : "border-gray-300",
+            isFocused ? "border-primary" : "border-gray-300",
             hasError ? "border-red-500 bg-red-50/40" : "",
             (leftIcon || rightIcon) && "gap-3",
             inputClassName,

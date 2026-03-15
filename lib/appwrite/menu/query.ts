@@ -11,8 +11,9 @@ export const getMenuQuery = async ({
   const queries = []
   try {
     if (category) {
-      queries.push(Query.equal("category", category))
+      queries.push(Query.equal("categories", category))
     }
+    console.log("api", category)
     if (query) {
       queries.push(Query.search("name", query))
     }
