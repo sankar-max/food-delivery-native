@@ -1,20 +1,35 @@
 import CartBtn from "@/components/CartBtn"
-import { getMenuQuery } from "@/lib/appwrite/menu/query"
+import { getCategoryQuery, getMenuQuery } from "@/lib/appwrite/menu/query"
+import Filter from "@/shared/Filter"
 import MenuCard, { MenuItem } from "@/shared/MenuCard"
+import Search from "@/shared/Search"
 import { useQuery } from "@tanstack/react-query"
+import { useLocalSearchParams } from "expo-router"
 import React from "react"
 import { FlatList, Text, View } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
+type SearchParams = {
+  category: string
+  query: string
+}
 
-const Search = () => {
+const SearchScreen = () => {
+  const { category, query } = useLocalSearchParams<SearchParams>()
   const { data: menus, isLoading: isLoadingMenus } = useQuery({
-    queryKey: ["menus1"],
-    queryFn: async () => await getMenuQuery({ category: "", query: "" }),
+    queryKey: ["menus", category, query],
+    queryFn: async () =>
+      await getMenuQuery({ category: category || "", query: query || "" }),
     staleTime: 1000 * 60 * 10,
   })
-  if (isLoadingMenus) {
-    return <Text>Loading...</Text>
-  }
+
+  const { data: categories } = useQuery({
+    queryKey: ["categories"],
+    queryFn: async () => await getCategoryQuery(),
+  })
+  // console.log("categories", categories)
+  // if (isLoadingMenus) {
+  //   return <Text>Loading...</Text>
+  // }
 
   return (
     <SafeAreaView className="bg-white flex-1">
@@ -45,10 +60,10 @@ const Search = () => {
                   </Text>
                 </View>
               </View>
-              <View>
-                <CartBtn />
-              </View>
+              <CartBtn />
             </View>
+            <Search />
+            <Filter categories={categories} />
           </View>
         )}
         ListEmptyComponent={() => (
@@ -61,4 +76,4 @@ const Search = () => {
   )
 }
 
-export default Search
+export default SearchScreen
