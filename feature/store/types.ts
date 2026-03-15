@@ -1,17 +1,10 @@
 import { User } from "../auth/types/user.types"
 
-type AuthState = {
+export type AuthStore = {
   user: User | null
-  isAuthenticated: boolean
   isLoading: boolean
-}
 
-type AuthActions = {
-  setIsAuthenticated: (isAuthenticated: boolean) => void
-  setIsLoading: (isLoading: boolean) => void
-  setUser: (user: User) => void
-
+  setUser: (user: User | null) => void
   fetchUser: () => Promise<void>
+  logout: () => void
 }
-
-export type AuthStore = AuthState & AuthActions
