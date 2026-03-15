@@ -14,6 +14,7 @@ const Filter = ({ categories }: Props) => {
   const handleChangeCategory = (category: string) => {
     router.setParams({ category: category === activeCat ? "" : category })
   }
+
   return (
     <FlatList
       showsHorizontalScrollIndicator={false}
