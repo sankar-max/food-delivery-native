@@ -53,17 +53,17 @@ const Input = forwardRef<TextInput, InputProps>(
     const hasError = !!error
 
     return (
-      <View className={cn("w-full gap-1.5", containerClassName)}>
+      <View className={cn("w-full gap-2", containerClassName)}>
         {/* Label */}
         {label && (
           <Text
             className={cn(
-              "text-sm font-medium",
+              "text-sm font-quicksand-semibold",
               hasError
-                ? "text-red-600"
+                ? "text-error"
                 : isFocused
-                  ? "text-blue-600" // or your primary color
-                  : "text-gray-700",
+                  ? "text-primary"
+                  : "text-gray-100",
               labelClassName,
             )}
           >
@@ -74,15 +74,15 @@ const Input = forwardRef<TextInput, InputProps>(
         {/* Input wrapper */}
         <View
           className={cn(
-            "flex-row items-center rounded-lg border bg-white px-4 ",
-            isFocused ? "border-primary" : "border-gray-300",
-            hasError ? "border-red-500 bg-red-50/40" : "",
-            (leftIcon || rightIcon) && "gap-3",
+            "flex-row items-center rounded-2xl border bg-white px-5 py-0.5",
+            isFocused ? "border-primary" : "border-gray-100/10",
+            hasError ? "border-error bg-error/5" : "",
+            (leftIcon || rightIcon) && "gap-4",
             inputClassName,
           )}
         >
           {/* Left Icon */}
-          {leftIcon && <View className="opacity-80">{leftIcon}</View>}
+          {leftIcon && <View className="opacity-70">{leftIcon}</View>}
 
           {/* TextInput */}
           <TextInput
@@ -90,16 +90,16 @@ const Input = forwardRef<TextInput, InputProps>(
             value={value}
             onChangeText={onChangeText}
             placeholder={placeholder}
-            placeholderTextColor={placeholderTextColor}
+            placeholderTextColor={"#878787"}
             secureTextEntry={secureTextEntry}
             keyboardType={keyboardType}
             autoCapitalize={autoCapitalize}
             autoCorrect={autoCorrect}
             autoComplete="off"
-            selectionColor="#3b82f6" // blue-500
+            selectionColor="#FE8C00"
             className={cn(
-              "flex-1 text-base text-gray-900",
-              hasError && "text-red-700",
+              "flex-1 text-base font-quicksand-semibold text-dark-100",
+              hasError && "text-error",
               inputClassName,
             )}
             onFocus={() => setIsFocused(true)}
@@ -110,7 +110,7 @@ const Input = forwardRef<TextInput, InputProps>(
           {/* Right Icon (e.g. eye for password) */}
           {rightIcon && (
             <TouchableWithoutFeedback onPress={onRightIconPress}>
-              <View className="p-1">{rightIcon}</View>
+              <View className="p-1 opacity-70">{rightIcon}</View>
             </TouchableWithoutFeedback>
           )}
         </View>
