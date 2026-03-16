@@ -16,9 +16,13 @@ type SearchParams = {
 
 const SearchScreen = () => {
   const { category, query } = useLocalSearchParams<SearchParams>()
-  const { data: menus, isLoading: isLoadingMenus } = useMenus({ category: category || "", query: query || "" })
+  const { data: menus, isLoading: isLoadingMenus } = useMenus({
+    category: category || "",
+    query: query || "",
+  })
   const { data: categories, isLoading: isLoadingCategories } = useCategories()
 
+  console.log("new menus", JSON.stringify(menus?.[0], null, 2))
   return (
     <SafeAreaView className="bg-white flex-1">
       <FlatList
@@ -40,12 +44,17 @@ const SearchScreen = () => {
             </View>
           )
         }}
-        keyExtractor={(item, index) => (isLoadingMenus ? `skeleton-${index}` : item.$id)}
+        keyExtractor={(item, index) =>
+          isLoadingMenus ? `skeleton-${index}` : item.$id
+        }
         numColumns={2}
         columnWrapperClassName="gap-3"
         contentContainerClassName="gap px-5 pb-32"
         ListHeaderComponent={() => (
-          <SearchHeader categories={categories} isLoading={isLoadingCategories} />
+          <SearchHeader
+            categories={categories}
+            isLoading={isLoadingCategories}
+          />
         )}
         ListEmptyComponent={() => (
           <View className="flex-center">
