@@ -14,7 +14,9 @@
   .flex-start {
     @apply flex items-start justify-center;
   }
-
+  .custom-header {
+    @apply w-full flex flex-row items-center justify-between mb-10;
+  }
   .shadow-premium {
     shadow-color: #000;
     shadow-offset: 0 4px;
@@ -107,6 +109,10 @@
 
   .paragraph-medium {
     @apply text-base font-quicksand-medium text-gray-100;
+  }
+
+  .body-bold {
+    @apply text-sm font-quicksand-bold text-dark-100;
   }
 
   .body-medium {

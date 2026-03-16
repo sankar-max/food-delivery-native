@@ -1,11 +1,25 @@
+import { useCartStore } from "@/feature/cart/store"
 import type { MenuItem } from "@/feature/menu/types"
 import { Image } from "expo-image"
+import { useRouter } from "expo-router"
 import React from "react"
 import { Text, TouchableOpacity, View } from "react-native"
 
 const MenuCard = ({ item }: { item: MenuItem }) => {
-  const { name, price, image_url, type } = item
+  const { name, price, image_url, type, $id } = item
+  const { addItem } = useCartStore()
+  const isInCart = useCartStore((state) =>
+    state.items.some((i) => i.id === $id),
+  )
+  const router = useRouter()
 
+  const handleAddToCart = () => {
+    if (isInCart) {
+      router.push("/(tabs)/cart")
+    } else {
+      addItem({ id: $id, name, price, image_url })
+    }
+  }
   return (
     <TouchableOpacity
       activeOpacity={0.9}
@@ -47,10 +61,19 @@ const MenuCard = ({ item }: { item: MenuItem }) => {
           </Text>
         </View>
 
-        <TouchableOpacity className="mt-4 bg-primary/10 py-2 rounded-xl flex-row items-center justify-center">
-          <Text className="text-xs font-quicksand-bold text-primary">
-            Add to Bag +
-          </Text>
+        <TouchableOpacity
+          onPress={handleAddToCart}
+          className="mt-4 bg-primary/10 py-2 rounded-xl flex-row items-center justify-center"
+        >
+          {isInCart ? (
+            <Text className="text-xs font-quicksand-bold text-primary">
+              View in Bag
+            </Text>
+          ) : (
+            <Text className="text-xs font-quicksand-bold text-primary">
+              Add to Bag +
+            </Text>
+          )}
         </TouchableOpacity>
       </View>
     </TouchableOpacity>
