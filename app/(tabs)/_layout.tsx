@@ -6,6 +6,7 @@ import { ActivityIndicator, View } from "react-native"
 
 const Layout = () => {
   const user = useAuthStore((s) => s.user)
+  console.log(JSON.stringify(user, null, 2))
   const isLoading = useAuthStore((s) => s.isLoading)
   const isAuthenticated = !!user
   if (isLoading) {
@@ -21,7 +22,7 @@ const Layout = () => {
 
   return (
     <Tabs
-      initialRouteName="search"
+      initialRouteName="index"
       screenOptions={{
         headerShown: false,
         tabBarShowLabel: false,

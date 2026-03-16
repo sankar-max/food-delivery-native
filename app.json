@@ -8,7 +8,8 @@
     "scheme": "fooddelivery",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.sankar.fooddelivery"
     },
     "android": {
       // "adaptiveIcon": {
@@ -18,6 +19,7 @@
       //   "monochromeImage": "./assets/images/android-icon-monochrome.png"
       // },
       // "predictiveBackGestureEnabled": false
+      "package": "com.sankar.fooddelivery"
     },
     "web": {
       "bundler": "metro",

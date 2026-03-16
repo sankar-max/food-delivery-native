@@ -29,17 +29,21 @@ const AuthLayout = () => {
   }
   const ios = Platform.OS === "ios"
 
-  const dimensionHeight = Dimensions.get("screen").height / 2.15
+  const dimensionHeight = Dimensions.get("window").height / 2.15
   return (
-    <KeyboardAvoidingView behavior={ios ? "padding" : "height"}>
+    <KeyboardAvoidingView
+      className="flex-1 bg-white"
+      behavior={ios ? "padding" : "height"}
+    >
       <ScrollView
         keyboardShouldPersistTaps={"handled"}
-        className="bg-white h-full"
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ flexGrow: 1 }}
       >
         <View className="w-full relative" style={{ height: dimensionHeight }}>
           <ImageBackground
             className={"size-full rounded-b-lg"}
-            resizeMode="contain"
+            resizeMode="cover"
             source={images.loginGraphic}
           />
           <Image

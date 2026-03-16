@@ -1,31 +1,28 @@
-import { MenuItem } from "@/feature/menu/types"
-import { appwriteConfig } from "@/lib/appwrite/config"
+import type { MenuItem } from "@/feature/menu/types"
 import { Image } from "expo-image"
 import React from "react"
-import { Platform, Text, TouchableOpacity, View } from "react-native"
+import { Text, TouchableOpacity, View } from "react-native"
 
 const MenuCard = ({ item }: { item: MenuItem }) => {
   const { name, price, image_url, type } = item
 
-  // Only append project ID if it's an Appwrite URL and missing the project parameter
-  const isAppwriteUrl =
-    image_url.includes("appwrite") ||
-    image_url.includes(appwriteConfig.endpoint)
-  const imageUri =
-    isAppwriteUrl && !image_url.includes("project=")
-      ? `${image_url}${image_url.includes("?") ? "&" : "?"}project=${appwriteConfig.projectId}`
-      : image_url
-  const isIOS = Platform.OS === "ios"
-
   return (
     <TouchableOpacity
       activeOpacity={0.9}
-      className="menu-card !pb-4 !pt-0 overflow-hidden"
-      style={isIOS ? {} : { elevation: 10, shadowColor: "#878787" }}
+      className="menu-card bg-white rounded-3xl !pb-4 !pt-0 "
+      style={{
+        shadowColor: "#878787",
+        // Android shadow
+        elevation: 10,
+        // iOS shadow
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.25,
+        shadowRadius: 5,
+      }}
     >
       <View className="w-full relative">
         <Image
-          source={{ uri: imageUri }}
+          source={{ uri: image_url }}
           contentFit="cover"
           transition={300}
           style={{ width: "100%", height: 160 }}

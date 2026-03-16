@@ -5,7 +5,10 @@ import { Alert, Text, View } from "react-native"
 
 import CustomBtn from "@/components/CustomBtn"
 import Input from "@/components/Input"
-import { signInSchema, type signInSchemaType } from "../../feature/auth/schemas/auth.schema"
+import {
+  signInSchema,
+  type signInSchemaType,
+} from "../../feature/auth/schemas/auth.schema"
 import { useLogin } from "../../feature/auth/hooks/useLogin"
 
 export default function SignIn() {
@@ -32,8 +35,7 @@ export default function SignIn() {
       Alert.alert("Welcome back!", "You have signed in successfully.")
       router.replace("/(tabs)")
     } catch (err: any) {
-      const message =
-        err?.message || "Something went wrong. Please try again."
+      const message = err?.message || "Something went wrong. Please try again."
       Alert.alert("Sign-in failed", message)
     }
   }
