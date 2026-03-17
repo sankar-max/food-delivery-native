@@ -1,3 +1,4 @@
+import CustomBtn from "@/components/CustomBtn"
 import { images } from "@/constants"
 import CartItem from "@/feature/cart/CartItem"
 import CartHeader from "@/feature/cart/header"
@@ -66,7 +67,16 @@ const Cart = () => {
         }
         ListFooterComponent={
           totalItems > 0 ? (
-            <View className="gap-5">
+            <View
+              className="gap-5"
+              style={{
+                elevation: 10,
+                shadowColor: "#000",
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.1,
+                shadowRadius: 3,
+              }}
+            >
               <View className="mt-6 border border-gray-200 p-5 rounded-2xl">
                 <Text className="h3-bold text-dark-100 mb-5">Payment</Text>
                 <PaymentInfo
@@ -92,6 +102,11 @@ const Cart = () => {
                   labelStyle="base-bold !text-dark-100"
                   valueStyle="base-bold !text-dark-100 text-right"
                 />
+              </View>
+              <View>
+                <CustomBtn onPress={() => {}} className="rounded-full py-3">
+                  <Text className="body-bold text-xl text-white">Checkout</Text>
+                </CustomBtn>
               </View>
             </View>
           ) : null

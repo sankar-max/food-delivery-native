@@ -2,17 +2,49 @@ import { images } from "@/constants"
 import { useCartStore } from "@/feature/cart/store"
 import { CartItemType } from "@/feature/cart/types"
 import { Image } from "expo-image"
-import React from "react"
+import React, { useRef } from "react"
 import { Text, TouchableOpacity, View } from "react-native"
 
 const CartItem = ({ item }: { item: CartItemType }) => {
   const { id, name, price, image_url, quantity, customizations } = item
   const { increaseQty, decreaseQty, removeItem } = useCartStore()
 
+  const intervalRef = useRef<NodeJS.Timeout | null>(null)
+
   const totalPrice =
     (price +
       (customizations?.reduce((acc, curr) => acc + curr.price, 0) ?? 0)) *
     quantity
+
+  const startDecreasing = () => {
+    if (item.quantity <= 1) return
+    decreaseQty(id, customizations ?? [])
+
+    intervalRef.current = setInterval(() => {
+      decreaseQty(id, customizations ?? [])
+    }, 170)
+  }
+
+  const stopDecreasing = () => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current)
+      intervalRef.current = null
+    }
+  }
+
+  const startIncreasing = () => {
+    increaseQty(id, customizations ?? [])
+    intervalRef.current = setInterval(() => {
+      increaseQty(id, customizations ?? [])
+    }, 170)
+  }
+
+  const stopIncreasing = () => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current)
+      intervalRef.current = null
+    }
+  }
 
   return (
     <View className="flex-row items-center bg-white rounded-3xl p-4 mb-4 shadow-soft">
@@ -35,6 +67,7 @@ const CartItem = ({ item }: { item: CartItemType }) => {
             >
               {name}
             </Text>
+
             <TouchableOpacity
               onPress={() => removeItem(id, customizations ?? [])}
               style={{ padding: 4 }}
@@ -60,8 +93,10 @@ const CartItem = ({ item }: { item: CartItemType }) => {
           </Text>
 
           <View className="flex-row items-center bg-gray-100/10 rounded-xl px-2 py-1">
+            {/* 🔽 DECREASE BUTTON */}
             <TouchableOpacity
-              onPress={() => decreaseQty(id, customizations ?? [])}
+              onPressIn={startDecreasing}
+              onPressOut={stopDecreasing}
               activeOpacity={0.7}
             >
               <View
@@ -70,7 +105,7 @@ const CartItem = ({ item }: { item: CartItemType }) => {
               >
                 <Image
                   source={images.minus}
-                  style={{ width: 12, height: 12 }}
+                  style={{ width: 12, height: 3 }}
                   tintColor="#FE8C00"
                 />
               </View>
@@ -78,8 +113,10 @@ const CartItem = ({ item }: { item: CartItemType }) => {
 
             <Text className="mx-3 body-bold text-dark-100">{quantity}</Text>
 
+            {/* 🔼 INCREASE BUTTON */}
             <TouchableOpacity
-              onPress={() => increaseQty(id, customizations ?? [])}
+              onPressIn={startIncreasing}
+              onPressOut={stopIncreasing}
               activeOpacity={0.7}
             >
               <View

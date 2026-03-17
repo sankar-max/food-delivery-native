@@ -40,7 +40,7 @@ const AuthLayout = () => {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ flexGrow: 1 }}
       >
-        <View className="w-full relative" style={{ height: dimensionHeight }}>
+        <View className="w-full flex-1 relative">
           <ImageBackground
             className={"size-full rounded-b-lg"}
             resizeMode="cover"

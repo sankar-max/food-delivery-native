@@ -37,7 +37,7 @@ const MenuCard = ({ item }: { item: MenuItem }) => {
       <View className="w-full relative">
         <Image
           source={{ uri: image_url }}
-          contentFit="cover"
+          contentFit="contain"
           transition={300}
           style={{ width: "100%", height: 160 }}
           className="rounded-t-3xl"

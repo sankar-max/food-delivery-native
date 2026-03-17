@@ -33,7 +33,7 @@ export default function SignIn() {
     try {
       await login(data)
       Alert.alert("Welcome back!", "You have signed in successfully.")
-      router.replace("/(tabs)")
+      router.replace("/")
     } catch (err: any) {
       const message = err?.message || "Something went wrong. Please try again."
       Alert.alert("Sign-in failed", message)
